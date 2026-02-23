@@ -6,12 +6,21 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import RedirectResponse
 from typing import Dict, Any, Optional, List
 
-from ..database import activities_collection, teachers_collection
+from ..database import activities_collection, teachers_collection, announcements_collection
 
 router = APIRouter(
     prefix="/activities",
     tags=["activities"]
 )
+
+
+@router.get("/announcement", response_model=Dict[str, str])
+def get_announcement() -> Dict[str, str]:
+    """Get the main announcement message"""
+    announcement = announcements_collection.find_one({"_id": "main"})
+    if not announcement:
+        return {"message": ""}
+    return {"message": announcement.get("message", "")}
 
 
 @router.get("", response_model=Dict[str, Any])

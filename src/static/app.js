@@ -865,4 +865,21 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAuthentication();
   initializeFilters();
   fetchActivities();
+  fetchAnnouncement();
+
+  async function fetchAnnouncement() {
+    try {
+      const response = await fetch("/activities/announcement");
+      if (response.ok) {
+        const data = await response.json();
+        const banner = document.getElementById("announcement-banner");
+        if (banner && data.message) {
+          banner.textContent = data.message;
+          banner.classList.remove("hidden");
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load announcement:", error);
+    }
+  }
 });
