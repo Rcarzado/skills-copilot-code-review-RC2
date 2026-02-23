@@ -25,6 +25,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeLoginModal = document.querySelector(".close-login-modal");
   const loginMessage = document.getElementById("login-message");
 
+  // Announcement banner elements
+  const announcementBanner = document.getElementById("announcement-banner");
+  const dismissAnnouncementButton = document.getElementById("dismiss-announcement");
+
+  // Initialize announcement banner (dismiss if previously dismissed)
+  if (announcementBanner && localStorage.getItem("announcementDismissed") === "true") {
+    announcementBanner.style.display = "none";
+  }
+  if (dismissAnnouncementButton) {
+    dismissAnnouncementButton.addEventListener("click", () => {
+      announcementBanner.style.display = "none";
+      localStorage.setItem("announcementDismissed", "true");
+    });
+  }
+
   // Activity categories with corresponding colors
   const activityTypes = {
     sports: { label: "Sports", color: "#e8f5e9", textColor: "#2e7d32" },
