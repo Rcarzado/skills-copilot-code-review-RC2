@@ -6,7 +6,12 @@ from pymongo import MongoClient
 from argon2 import PasswordHasher, exceptions as argon2_exceptions
 
 # Connect to MongoDB
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient(
+    'mongodb://localhost:27017/',
+    serverSelectionTimeoutMS=2000,
+    connectTimeoutMS=2000,
+    socketTimeoutMS=2000,
+)
 db = client['mergington_high']
 activities_collection = db['activities']
 teachers_collection = db['teachers']

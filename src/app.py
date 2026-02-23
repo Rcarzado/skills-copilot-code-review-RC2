@@ -10,7 +10,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 import os
 from pathlib import Path
-from .backend import routers, database
+
+try:
+    from .backend import routers, database
+except ImportError:
+    from backend import routers, database
 
 # Initialize web host
 app = FastAPI(
@@ -19,7 +23,10 @@ app = FastAPI(
 )
 
 # Initialize database with sample data if empty
-database.init_database()
+try:
+    database.init_database()
+except Exception as error:
+    print(f"Warning: could not initialize MongoDB data: {error}")
 
 # Mount the static files directory for serving the frontend
 current_dir = Path(__file__).parent
@@ -33,3 +40,9 @@ def root():
 # Include routers
 app.include_router(routers.activities.router)
 app.include_router(routers.auth.router)
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
