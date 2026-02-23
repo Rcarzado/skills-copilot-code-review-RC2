@@ -861,8 +861,28 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeRangeFilter,
   };
 
+  // Function to fetch and display the announcement banner
+  async function fetchAnnouncement() {
+    try {
+      const response = await fetch("/activities/announcement");
+      if (!response.ok) {
+        console.warn("Failed to fetch announcement:", response.status);
+        return;
+      }
+      const data = await response.json();
+      const banner = document.getElementById("announcement-banner");
+      if (banner && data.message) {
+        banner.textContent = data.message;
+        banner.classList.remove("hidden");
+      }
+    } catch (error) {
+      console.error("Error fetching announcement:", error);
+    }
+  }
+
   // Initialize app
   checkAuthentication();
   initializeFilters();
   fetchActivities();
+  fetchAnnouncement();
 });
