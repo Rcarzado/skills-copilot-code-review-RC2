@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import RedirectResponse
 from typing import Dict, Any, Optional, List
 
-from ..database import activities_collection, teachers_collection
+from ..database import activities_collection, teachers_collection, announcements_collection
 
 router = APIRouter(
     prefix="/activities",
@@ -64,6 +64,15 @@ def get_available_days() -> List[str]:
         days.append(day_doc["_id"])
 
     return days
+
+
+@router.get("/announcement", response_model=Dict[str, Any])
+def get_announcement() -> Dict[str, Any]:
+    """Get the active announcement banner message"""
+    announcement = announcements_collection.find_one({"_id": "active"})
+    if not announcement:
+        return {"message": ""}
+    return {"message": announcement.get("message", "")}
 
 
 @router.post("/{activity_name}/signup")
