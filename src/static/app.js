@@ -24,11 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login-form");
   const closeLoginModal = document.querySelector(".close-login-modal");
   const loginMessage = document.getElementById("login-message");
-  const announcementBanner = document.getElementById("announcement-banner");
-  const announcementText = document.getElementById("announcement-text");
-  const dismissAnnouncementButton = document.getElementById(
-    "dismiss-announcement"
-  );
 
   // Activity categories with corresponding colors
   const activityTypes = {
@@ -48,12 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Authentication state
   let currentUser = null;
-
-  const announcementConfig = {
-    id: "2026-spring-registration",
-    text: "Spring activity registration opens Monday at 8:00 AM.",
-  };
-  const announcementStorageKey = "dismissedAnnouncementId";
 
   // Time range mappings for the dropdown
   const timeRanges = {
@@ -249,29 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loginButton.addEventListener("click", openLoginModal);
   logoutButton.addEventListener("click", logout);
   closeLoginModal.addEventListener("click", closeLoginModalHandler);
-
-  function initializeAnnouncementBanner() {
-    if (!announcementBanner || !announcementText || !dismissAnnouncementButton) {
-      return;
-    }
-
-    const dismissedAnnouncementId = localStorage.getItem(
-      announcementStorageKey
-    );
-
-    if (dismissedAnnouncementId === announcementConfig.id) {
-      announcementBanner.classList.add("hidden");
-      return;
-    }
-
-    announcementText.textContent = announcementConfig.text;
-    announcementBanner.classList.remove("hidden");
-
-    dismissAnnouncementButton.addEventListener("click", () => {
-      localStorage.setItem(announcementStorageKey, announcementConfig.id);
-      announcementBanner.classList.add("hidden");
-    });
-  }
 
   // Close login modal when clicking outside
   window.addEventListener("click", (event) => {
@@ -897,7 +863,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize app
   checkAuthentication();
-  initializeAnnouncementBanner();
   initializeFilters();
   fetchActivities();
 });
